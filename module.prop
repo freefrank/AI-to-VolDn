@@ -1,6 +1,6 @@
-id=bixby-remap
-name=Bixby button remapper
-version=v2.2
-versionCode=22
-author=ianmacd
-description=Remaps Bixby button on Samsung S8, S8+, S9, S9+, S10e, S10 and S10+ to 1 of 15 functions.
+id=XiaomiAI-remap
+name=Xiaomi AI button remapper
+version=v0.1
+versionCode=1
+author=Cr0wTom
+description=Remaps AI button on Xiaomi Mi 9 and Mi Mix 3 to 1 of 15 functions.

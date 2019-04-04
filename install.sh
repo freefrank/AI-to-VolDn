@@ -12,7 +12,7 @@
 # 3. Configure and implement callbacks in this file
 # 4. If you need boot scripts, add them into common/post-fs-data.sh or common/service.sh
 # 5. Add your additional or modified system properties into common/system.prop
-#
+# 
 ##########################################################################################
 
 ##########################################################################################
@@ -123,7 +123,7 @@ REPLACE="
 
 print_modname() {
   ui_print "*******************************"
-  ui_print "       Bixby key remapper      "
+  ui_print "    Xiaomi AI key remapper     "
   ui_print "*******************************"
 }
 
@@ -171,25 +171,9 @@ on_install() {
     CHOICE=CAMERA
   fi
   
-  bl=$(getprop ro.boot.bootloader)
+  kl=/system/usr/keylayout/gpio-keys.kl
   
-  # Device is either 4 or 5 characters long, depending on length of bootloader
-  # string.
-  #
-  device=${bl:0:$((${#bl} - 8))}
-  
-  kl=/system/usr/keylayout/Generic.kl
-  kl_s10=$kl.g97x
-  
-  # Select the right keyboard layout for this device.
-  #
-  if ( [ $device = G975F ] || [ $device = G973F ] || [ $device = G970F ]); then
-    mv $MODPATH$kl_s10 $MODPATH$kl
-  else
-    rm $MODPATH$kl_s10
-  fi
-  
-  sed -i -re 's/(key 703 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
+  sed -i -re 's/(key 689 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
 }
 
 # Only some special files require specific permissions
@@ -212,7 +196,7 @@ set_permissions() {
 get_key() {
   local key=$( LD_LIBRARY_PATH=/system/lib64 \
 	       /system/bin/getevent -lqc 1  | awk '{ print $(NF-1) }' )
-  [ $key = 02bf ] && key=KEY_BIXBY
+  [ $key = 02b1 ] && key=AI
 
   echo $key
 }
@@ -220,7 +204,7 @@ get_key() {
 q_and_a() {
   local choice1="     [Vol Up]   = $1"
   local choice2="     [Vol Down] = $2"
-  local choice3="     [Bixby]    = $3"
+  local choice3="     [AI]    = $3"
 
   ui_print " - Which function?"
   ui_print "$choice1"
@@ -229,7 +213,7 @@ q_and_a() {
 
   local n=99
   until [ $n -le $# ]; do
-    unset UP DOWN BIXBY
+    unset UP DOWN AI
     local a=$(get_key)
 
     case $a in
@@ -241,8 +225,8 @@ q_and_a() {
         DOWN=true
         n=2
         ;;
-      *BIXBY)
-        BIXBY=true
+      *AI)
+        AI=true
         n=3
         ;;
       *)
