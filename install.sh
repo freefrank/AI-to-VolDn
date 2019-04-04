@@ -135,7 +135,7 @@ on_install() {
   ui_print "- Extracting module files"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
-  ui_print "- Configuring Bixby button..."
+  ui_print "- Configuring Xiaomi AI button..."
   ui_print ""
   ui_print "Make a choice from the following functions:"
   ui_print ""
