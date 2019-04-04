@@ -29,3 +29,9 @@ new selection and reboot.
 
 To restore the default Mi AI behaviour, simply deactivate or uninstall the
 module and reboot.
+
+## Changelog
+
+2019-04-04: v0.1
+
+- Initial release.
