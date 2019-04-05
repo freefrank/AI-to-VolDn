@@ -136,6 +136,7 @@ on_install() {
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
   ui_print "- Configuring Xiaomi AI button..."
+  ui_print "Single tap configuration"
   ui_print ""
   ui_print "Make a choice from the following functions:"
   ui_print ""
@@ -159,13 +160,21 @@ on_install() {
   ui_print ""
   
   q_and_a CAMERA SYSRQ Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a SEARCH VOICE_ASSIST Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a CALL CONTACTS Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a MUSIC VOLUME_MUTE Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a MEDIA_PLAY_PAUSE MEDIA_NEXT Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a APP_SWITCH QPANEL_ON_OFF Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a EXPLORER CALENDAR Other
+  q_and_a 
   [ -z "$CHOICE" ] && q_and_a CALCULATOR Other
+  q_and_a 
   if [ -z "$CHOICE" ]; then
     ui_print "- No choice made. Using CAMERA."
     CHOICE=CAMERA
@@ -174,6 +183,37 @@ on_install() {
   kl=/system/usr/keylayout/gpio-keys.kl
   
   sed -i -re 's/(key 689 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
+
+  ui_print "- Configuring Xiaomi AI button..."
+  ui_print "Double tap configuration."
+  ui_print ""
+  ui_print "Use the hardware buttons to make a selection."
+  ui_print ""
+  
+  q_and_a CAMERA SYSRQ Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a SEARCH VOICE_ASSIST Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a CALL CONTACTS Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a MUSIC VOLUME_MUTE Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a MEDIA_PLAY_PAUSE MEDIA_NEXT Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a APP_SWITCH QPANEL_ON_OFF Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a EXPLORER CALENDAR Other
+  q_and_a 
+  [ -z "$CHOICE" ] && q_and_a CALCULATOR Other
+  q_and_a 
+  if [ -z "$CHOICE" ]; then
+    ui_print "- No choice made. Using CAMERA."
+    CHOICE=CAMERA
+  fi
+  
+  kl=/system/usr/keylayout/gpio-keys.kl
+  
+  sed -i -re 's/(key 766 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
 }
 
 # Only some special files require specific permissions
@@ -194,19 +234,22 @@ set_permissions() {
 # You can add more functions to assist your custom script code
 
 get_key() {
-  local key=$( LD_LIBRARY_PATH=/system/lib64 \
-	       /system/bin/getevent -lqc 1  | awk '{ print $(NF-1) }' )
-  [ $key = 02b1 ] && key=AI
+  local key=$( /system/bin/getevent -lqc 1  | awk '{ print $(NF-1) }' )
+  [ $key = 02b1 ] && key=KEY_AI
 
   echo $key
 }
 
 q_and_a() {
+  if [ -z "$1" ]; then
+    local a=$(get_key)
+    return 0
+  fi
   local choice1="     [Vol Up]   = $1"
   local choice2="     [Vol Down] = $2"
   local choice3="     [AI]    = $3"
 
-  ui_print " - Which function?"
+  ui_print "- Which function?"
   ui_print "$choice1"
   ui_print "$choice2"
   [ -n "$3" ] && ui_print "$choice3"
@@ -230,7 +273,7 @@ q_and_a() {
         n=3
         ;;
       *)
-	n=99
+	      n=99
         ;;
     esac
 
