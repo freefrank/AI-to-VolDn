@@ -260,7 +260,8 @@ q_and_a() {
 
 device_check() {
   bl=$(getprop ro.product.name)
-  if ( [ $bl = cepheus_eea ] || [ $bl = G973F ] || [ $bl = G970F ]); then
+  device=${bl:0:7}
+  if ( [ $device = cepheus ] || [ $device = perseus ]); then
     break
   else
     abort "Unsupported device or modified build.prop"
