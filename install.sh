@@ -134,6 +134,8 @@ on_install() {
   # Extend/change the logic to whatever you want
   ui_print "- Extracting module files"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
+  #Place for check functions
+  device_check
 
   ui_print "- Configuring Xiaomi AI button..."
   ui_print "Single tap configuration"
@@ -282,4 +284,15 @@ q_and_a() {
   CHOICE=$(eval echo '$'$n)
   ui_print ""
   [ $CHOICE = Other ] && unset CHOICE
+}
+
+
+device_check() {
+  bl=$(getprop ro.product.name)
+  if ( [ $bl = cepheus_eea ] || [ $bl = G973F ] || [ $bl = G970F ]); then
+    break
+  else
+    abort "Unsupported device or modified build.prop"
+  fi
+
 }
