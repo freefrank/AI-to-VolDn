@@ -157,6 +157,7 @@ on_install() {
   ui_print "Internet Browser (EXPLORER)"
   ui_print "Calendar (CALENDAR)"
   ui_print "Calculator (CALCULATOR)"
+  ui_print "No Function (NOF)"
   ui_print ""
   ui_print "Use the hardware buttons to make a selection."
   ui_print ""
@@ -175,7 +176,7 @@ on_install() {
   q_and_a 
   [ -z "$CHOICE" ] && q_and_a EXPLORER CALENDAR Other
   q_and_a 
-  [ -z "$CHOICE" ] && q_and_a CALCULATOR Other
+  [ -z "$CHOICE" ] && q_and_a CALCULATOR NOF Other
   q_and_a 
   if [ -z "$CHOICE" ]; then
     ui_print "- No choice made. Using CAMERA."
@@ -186,36 +187,6 @@ on_install() {
   
   sed -i -re 's/(key 689 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
 
-  ui_print "- Configuring Xiaomi AI button..."
-  ui_print "Double tap configuration."
-  ui_print ""
-  ui_print "Use the hardware buttons to make a selection."
-  ui_print ""
-  
-  q_and_a CAMERA SYSRQ Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a SEARCH VOICE_ASSIST Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a CALL CONTACTS Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a MUSIC VOLUME_MUTE Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a MEDIA_PLAY_PAUSE MEDIA_NEXT Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a APP_SWITCH QPANEL_ON_OFF Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a EXPLORER CALENDAR Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a CALCULATOR Other
-  q_and_a 
-  if [ -z "$CHOICE" ]; then
-    ui_print "- No choice made. Using CAMERA."
-    CHOICE=CAMERA
-  fi
-  
-  kl=/system/usr/keylayout/gpio-keys.kl
-  
-  sed -i -re 's/(key 766 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
 }
 
 # Only some special files require specific permissions
