@@ -142,7 +142,7 @@ on_install() {
   ui_print ""
   ui_print "Make a choice from the following functions:"
   ui_print ""
-  ui_print "Camera (CAMERA)"
+  ui_print "Volume Down"
   ui_print "Screenshot (SYSRQ)"
   ui_print "Google Search (SEARCH)"
   ui_print "Google Voice (VOICE_ASSIST)"
@@ -162,7 +162,7 @@ on_install() {
   ui_print "Use the hardware buttons to make a selection."
   ui_print ""
   
-  q_and_a CAMERA SYSRQ Other
+  q_and_a VOLUME_DOWN SYSRQ Other
   q_and_a 
   [ -z "$CHOICE" ] && q_and_a SEARCH VOICE_ASSIST Other
   q_and_a 
