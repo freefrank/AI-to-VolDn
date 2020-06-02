@@ -19,9 +19,8 @@
 # Config Flags
 ##########################################################################################
 
-# Set to true if you do *NOT* want Magisk to mount
-# any files for you. Most modules would NOT want
-# to set this flag to true
+# Set to true if you need to enable Magic Mount
+# Most mods would like it to be enabled
 SKIPMOUNT=false
 
 # Set to true if you need to load system.prop
@@ -42,17 +41,10 @@ LATESTARTSERVICE=false
 
 # Construct your list in the following format
 # This is an example
-REPLACE_EXAMPLE="
-/system/app/Youtube
-/system/priv-app/SystemUI
-/system/priv-app/Settings
-/system/framework
-"
 
-# Construct your own list here
 REPLACE="
 "
-
+# Construct your own list here
 ##########################################################################################
 #
 # Function Callbacks
@@ -133,60 +125,8 @@ on_install() {
   # The following is the default implementation: extract $ZIPFILE/system to $MODPATH
   # Extend/change the logic to whatever you want
   ui_print "- Extracting module files"
-  unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
   #Place for check functions
-  device_check
-
-  ui_print "- Configuring Xiaomi AI button..."
-  ui_print "Single tap configuration"
-  ui_print ""
-  ui_print "Make a choice from the following functions:"
-  ui_print ""
-  ui_print "Volume Down"
-  ui_print "Screenshot (SYSRQ)"
-  ui_print "Google Search (SEARCH)"
-  ui_print "Google Voice (VOICE_ASSIST)"
-  ui_print "Call (CALL)"
-  ui_print "Contacts (CONTACTS)"
-  ui_print "Music Player (MUSIC)"
-  ui_print "Mute/Unmute Media Volume (VOLUME_MUTE)"
-  ui_print "Play/Pause Media (MEDIA_PLAY_PAUSE)"
-  ui_print "Next Media (MEDIA_NEXT)"
-  ui_print "Recent Apps (APP_SWITCH)"
-  ui_print "Open/Close Quick Settings (QPANEL_ON_OFF)"
-  ui_print "Internet Browser (EXPLORER)"
-  ui_print "Calendar (CALENDAR)"
-  ui_print "Calculator (CALCULATOR)"
-  ui_print "No Function (NOF)"
-  ui_print ""
-  ui_print "Use the hardware buttons to make a selection."
-  ui_print ""
   
-  q_and_a VOLUME_DOWN SYSRQ Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a SEARCH VOICE_ASSIST Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a CALL CONTACTS Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a MUSIC VOLUME_MUTE Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a MEDIA_PLAY_PAUSE MEDIA_NEXT Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a APP_SWITCH QPANEL_ON_OFF Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a EXPLORER CALENDAR Other
-  q_and_a 
-  [ -z "$CHOICE" ] && q_and_a CALCULATOR NOF Other
-  q_and_a 
-  if [ -z "$CHOICE" ]; then
-    ui_print "- No choice made. Using CAMERA."
-    CHOICE=CAMERA
-  fi
-  
-  kl=/system/usr/keylayout/gpio-keys.kl
-  
-  sed -i -re 's/(key 689 +)[A-Z]+$/\1'$CHOICE'/' $MODPATH$kl
-
 }
 
 # Only some special files require specific permissions
@@ -204,67 +144,6 @@ set_permissions() {
   # set_perm  $MODPATH/system/lib/libart.so       0     0       0644
 }
 
-# You can add more functions to assist your custom script code
-
-get_key() {
-  local key=$( /system/bin/getevent -lqc 1  | awk '{ print $(NF-1) }' )
-  [ $key = 02b1 ] && key=KEY_AI
-
-  echo $key
-}
-
-q_and_a() {
-  if [ -z "$1" ]; then
-    local a=$(get_key)
-    return 0
-  fi
-  local choice1="     [Vol Up]   = $1"
-  local choice2="     [Vol Down] = $2"
-  local choice3="     [AI]    = $3"
-
-  ui_print "- Which function?"
-  ui_print "$choice1"
-  ui_print "$choice2"
-  [ -n "$3" ] && ui_print "$choice3"
-
-  local n=99
-  until [ $n -le $# ]; do
-    unset UP DOWN AI
-    local a=$(get_key)
-
-    case $a in
-      *UP)
-        UP=true
-        n=1
-        ;;
-      *DOWN)
-        DOWN=true
-        n=2
-        ;;
-      *AI)
-        AI=true
-        n=3
-        ;;
-      *)
-	      n=99
-        ;;
-    esac
-
-  done
-
-  CHOICE=$(eval echo '$'$n)
-  ui_print ""
-  [ $CHOICE = Other ] && unset CHOICE
-}
 
 
-device_check() {
-  bl=$(getprop ro.product.name)
-  device=${bl:0:7}
-  if ( [ $device = cepheus ] || [ $device = perseus ]); then
-    break
-  else
-    abort "Unsupported device or modified build.prop"
-  fi
 
-}
