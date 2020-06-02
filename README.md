@@ -1,35 +1,6 @@
-# **Mi AI Button Remapper**
+# **AI Button Remapper**
 
 ## Description
-
-This Magisk module allows you to remap the dedicated Mi AI hardware button of
-the Xiaomi Mi 9 and Mi Mix 3 to any one of 15 user-selectable functions.
-
-The following functions are selectable during installation, using the hardware
-keys of the phone:
-
-* Volume Down
-* Screenshot
-* Google Search
-* Google Voice
-* Call
-* Contacts
-* Music Player
-* Mute/Unmute Media Volume
-* Play/Pause Media
-* Next Media
-* Recent Apps
-* Open/Close Quick Settings
-* Internet Browser
-* Calendar
-* Calculator
-* No Function
-
-To change the currently mapped function, simply reinstall the module, make a
-new selection and reboot.
-
-To restore the default Mi AI behaviour, simply deactivate or uninstall the
-module and reboot.
 
 XDA-Developers Thread: https://forum.xda-developers.com/Mi-9/themes/mod-mi-ai-button-remapper-t3918291
 
@@ -37,7 +8,7 @@ XDA-Developers Thread: https://forum.xda-developers.com/Mi-9/themes/mod-mi-ai-bu
 
 2020-06-02
 
-- Key Volume Down
+- Key Volume Down Only
 
 2019-04-18: v0.4
 
