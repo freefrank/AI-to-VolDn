@@ -8,7 +8,7 @@ the Xiaomi Mi 9 and Mi Mix 3 to any one of 15 user-selectable functions.
 The following functions are selectable during installation, using the hardware
 keys of the phone:
 
-* Camera
+* Volume Down
 * Screenshot
 * Google Search
 * Google Voice
@@ -34,6 +34,10 @@ module and reboot.
 XDA-Developers Thread: https://forum.xda-developers.com/Mi-9/themes/mod-mi-ai-button-remapper-t3918291
 
 ## Changelog
+
+2020-06-02
+
+- Key Volume Down
 
 2019-04-18: v0.4
 
